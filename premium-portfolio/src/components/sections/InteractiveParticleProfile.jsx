@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import profileImg from "../../assets/Profile.JPG";
+import profileImg from "../../assets/profile_mesh.png";
 
 export default function InteractiveParticleProfile() {
   const canvasRef = useRef(null);
@@ -22,8 +22,8 @@ export default function InteractiveParticleProfile() {
     ctx.scale(dpr, dpr);
 
     const particles = [];
-    const PARTICLE_COUNT = 80;
-    const MAX_DISTANCE = 90;
+    const PARTICLE_COUNT = 150;
+    const MAX_DISTANCE = 95;
 
     const mouse = {
       x: width / 2,
@@ -85,7 +85,7 @@ export default function InteractiveParticleProfile() {
         // Draw particle dot
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255, 215, 0, 0.8)";
+        ctx.fillStyle = "rgba(200, 200, 200, 0.8)";
         ctx.fill();
 
         // Draw connecting lines
@@ -97,7 +97,7 @@ export default function InteractiveParticleProfile() {
 
           if (dist < MAX_DISTANCE) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 215, 0, ${1 - dist / MAX_DISTANCE})`;
+            ctx.strokeStyle = `rgba(180, 180, 180, ${0.8 - (dist / MAX_DISTANCE) * 0.8})`;
             ctx.lineWidth = 1.2;
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
@@ -144,15 +144,15 @@ export default function InteractiveParticleProfile() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6">
+    <div className="flex flex-col items-center justify-center">
       <motion.div
-        className="relative w-72 h-72 md:w-[340px] md:h-[340px] rounded-full overflow-hidden border-4 border-yellow-500/30 shadow-[0_0_30px_rgba(255,215,0,0.2)] group cursor-crosshair"
+        className="relative w-56 h-56 md:w-64 md:h-64 rounded-full overflow-hidden border-2 border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.1)] group cursor-crosshair"
         style={{
           borderRadius: "50%",
         }}
         whileHover={{
           scale: 1.02,
-          boxShadow: "0px 0px 40px rgba(255, 215, 0, 0.4)"
+          boxShadow: "0px 0px 30px rgba(255, 255, 255, 0.2)"
         }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
@@ -172,16 +172,6 @@ export default function InteractiveParticleProfile() {
           className="absolute inset-0 w-full h-full z-10 opacity-70 group-hover:opacity-100 transition-opacity duration-500"
         />
       </motion.div>
-      
-      {/* Name and Designation below */}
-      <div className="text-center mt-2">
-        <h3 className="text-lg md:text-xl font-extrabold uppercase tracking-widest text-white">
-          Neav Panjwani
-        </h3>
-        <p className="text-xs md:text-sm text-yellow-400 font-semibold tracking-wider uppercase mt-1">
-          Software Engineer & Game Developer
-        </p>
-      </div>
     </div>
   );
 }

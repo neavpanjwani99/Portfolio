@@ -7,7 +7,7 @@ export default function AboutMeBogie() {
   return (
     <section
       id="about"
-      className="relative min-h-screen -mt-6 flex items-center justify-center px-6 py-8 text-white"
+      className="relative min-h-screen flex items-center justify-center px-6 py-16 text-white"
     >
       {/* Train Bogie Frame */}
       <motion.div
@@ -27,7 +27,7 @@ export default function AboutMeBogie() {
         />
 
         {/* Windows inside Bogie */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-12 py-8 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-12 py-16 items-center">
           {/* Left Window: Profile */}
           <div className="flex justify-center items-center">
             <InteractiveParticleProfile />
@@ -65,7 +65,7 @@ export default function AboutMeBogie() {
         </div>
 
         {/* Timeline Strip */}
-        <div className="mt-4 px-6 pb-12">
+        <div className="mt-8 px-6 pb-20">
           <div className="relative flex items-center justify-between">
             <div
               className="absolute top-1/2 left-0 w-full h-[4px] 
