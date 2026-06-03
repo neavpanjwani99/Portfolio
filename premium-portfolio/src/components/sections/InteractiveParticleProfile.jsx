@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import profileImg from "../../assets/Profile.JPG";
 
 export default function InteractiveParticleProfile() {
   const canvasRef = useRef(null);
@@ -157,7 +158,7 @@ export default function InteractiveParticleProfile() {
       >
         {/* The Real Profile Image */}
         <img
-          src="/Profile.JPG"
+          src={profileImg}
           alt="Neav Panjwani"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
