@@ -100,7 +100,7 @@ export default function LandingPage({ goto }) {
 
                 {/* Social Links */}
                 <div className="flex gap-6 justify-center mt-6 text-2xl text-yellow-300 relative z-10">
-                    <a href="https://github.com/NeavPanjwani" target="_blank" className="hover:text-white transition"><FaGithub /></a>
+                    <a href="https://github.com/NeavPanjwani99" target="_blank" className="hover:text-white transition"><FaGithub /></a>
                     <a href="https://www.linkedin.com/in/neav-panjwani" target="_blank" className="hover:text-white transition"><FaLinkedin /></a>
                     <a href="https://www.instagram.com/neav_panjwani?igsh=NXFkNXp1OGs0a20z" target="_blank" className="hover:text-white transition"><FaInstagram /></a>
                 </div>
