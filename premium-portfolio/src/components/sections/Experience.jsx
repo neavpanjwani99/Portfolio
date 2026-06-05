@@ -60,7 +60,7 @@ export default function Experience() {
               
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <div>
-                  <h3 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+                  <h3 className="text-3xl font-logo font-bold text-white mb-2 flex items-center gap-3 tracking-wide">
                     <FaBuilding className="text-yellow-400 text-2xl" /> {exp.company}
                   </h3>
                   <p className="text-xl text-yellow-300 font-semibold">{exp.role}</p>
@@ -89,7 +89,7 @@ export default function Experience() {
 
                 {/* Verification Documents */}
                 <div className="space-y-6">
-                  <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                  <h4 className="text-lg font-logo font-bold text-white flex items-center gap-2 tracking-widest">
                     <FaAward className="text-yellow-400" /> Verifications
                   </h4>
                   <div className="grid grid-cols-1 gap-3">

@@ -35,8 +35,8 @@ export default function AboutMeBogie() {
 
           {/* Right Window: About Text */}
           <div className="text-center md:text-left">
-            <h2 className="text-4xl font-extrabold gold-text mb-3">About Me</h2>
-            <div className="text-xl sm:text-2xl leading-relaxed font-medium">
+            <h2 className="text-4xl font-logo font-extrabold gold-text mb-3">About Me</h2>
+            <div className="text-xl sm:text-2xl font-logo leading-relaxed font-medium tracking-wide">
               <Typewriter
                 options={{
                   strings: [
@@ -115,7 +115,7 @@ export default function AboutMeBogie() {
                 >
                   {step.icon}
                 </div>
-                <p className="mt-2 text-sm text-white/80">{step.label}</p>
+                <p className="mt-2 text-sm font-logo tracking-widest text-white/80">{step.label}</p>
 
                 {/* Hover Info Card */}
                 <div

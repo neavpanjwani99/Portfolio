@@ -41,7 +41,7 @@ export default function LandingPage({ goto }) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1 }}
                 whileHover={{ scale: 1.02, rotate: 0.5 }}
-                className="relative glass gold-border px-10 py-12 rounded-3xl shadow-2xl text-center max-w-2xl bg-black/30 backdrop-blur-md overflow-hidden"
+                className="relative glass gold-border px-10 py-10 mb-12 rounded-3xl shadow-2xl text-center max-w-2xl bg-black/30 backdrop-blur-md overflow-hidden"
             >
                 {/* Neon Glow Border Animation */}
                 <motion.div
@@ -50,15 +50,15 @@ export default function LandingPage({ goto }) {
                     transition={{ duration: 4, repeat: Infinity }}
                 />
 
-                <h1 className="text-4xl sm:text-5xl font-extrabold gold-text mb-4 animate-pulse relative z-10 drop-shadow-sm">
-                    Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-500">Neav</span>
+                <h1 className="text-4xl sm:text-6xl font-logo font-extrabold gold-text mb-4 animate-pulse relative z-10 drop-shadow-sm">
+                    Hi, I'm <span className="font-signature font-normal text-5xl sm:text-7xl capitalize tracking-normal text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-500 drop-shadow-md">Neav</span>
                 </h1>
-                <p className="text-lg sm:text-xl text-white/80 mb-4 italic relative z-10">
+                <p className="text-lg sm:text-xl font-logo text-white/80 mb-4 italic relative z-10 tracking-widest">
                     Software Developer | Aspiring Game Developer
                 </p>
 
                 {/* Typewriter Roles */}
-                <div className="text-xl sm:text-2xl gold-text mb-8 relative z-10">
+                <div className="text-xl sm:text-2xl font-logo gold-text mb-8 relative z-10">
                     <Typewriter
                         options={{
                             strings: [
@@ -76,8 +76,8 @@ export default function LandingPage({ goto }) {
 
                 {/* Small Bio */}
                 <p className="text-white/70 text-sm sm:text-base max-w-lg mx-auto mb-8 leading-relaxed relative z-10">
-                    I am a <span className="text-amber-400 font-medium">Software Developer</span> and
-                    an <span className="text-amber-400 font-medium">Aspiring Game Developer</span>.
+                    I am a <span className="text-amber-400 font-logo font-medium tracking-wide">Software Developer</span> and
+                    an <span className="text-amber-400 font-logo font-medium tracking-wide">Aspiring Game Developer</span>.
                     I specialize in building high-performance applications and immersive gaming experiences,
                     blending solid engineering with creative design.
                 </p>

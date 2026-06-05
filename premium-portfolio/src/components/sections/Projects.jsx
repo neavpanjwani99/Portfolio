@@ -141,7 +141,7 @@ export default function ProjectsBogie() {
             {/* Project Content */}
             <div className="p-6 flex flex-col h-1/2">
               <div className="flex-1">
-                <h3 className="text-xl font-extrabold text-yellow-400 mb-2">
+                <h3 className="text-xl font-logo font-extrabold text-yellow-400 mb-2">
                   {project.name}
                 </h3>
                 <p className="text-white/80 text-xs mb-3 leading-snug line-clamp-2">

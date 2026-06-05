@@ -46,7 +46,7 @@ export default function CertificatesTrain() {
 
     return (
         <section className="relative min-h-screen w-full text-white overflow-hidden flex flex-col items-center justify-center px-6">
-            <h2 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-500 drop-shadow-md mb-12 mt-6">
+            <h2 className="text-5xl font-logo font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-500 drop-shadow-md mb-12 mt-6">
                 My Certificates
             </h2>
 
@@ -97,13 +97,13 @@ function CertificateEngine() {
         <div className="relative">
             <div className="relative w-[420px] h-[250px] rounded-2xl bg-gradient-to-b from-gray-800 to-gray-900 border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.6)] flex flex-col justify-between p-6">
                 <div className="absolute top-10 left-0 right-0 h-3 rounded-md mx-6 bg-gradient-to-r from-sky-400 to-blue-600" />
-                <div className="absolute top-[-40px] left-7 w-[170px] h-[120px] rounded-xl bg-gradient-to-b from-gray-700 to-gray-900 border border-white/10 flex items-center justify-center text-sm font-semibold text-white/80">
+                <div className="absolute top-[-40px] left-7 w-[170px] h-[120px] rounded-xl bg-gradient-to-b from-gray-700 to-gray-900 border border-white/10 flex items-center justify-center text-lg font-logo font-semibold tracking-widest text-white/80">
                     Engine
                 </div>
                 <div className="absolute -top-8 left-[210px] w-7 h-16 bg-gray-700 rounded-b-md border border-white/10" />
                 <Smoke />
                 <div className="absolute top-[80px] -right-3 w-6 h-6 rounded-full bg-yellow-200 shadow-[0_0_30px_rgba(255,255,170,0.9)]" />
-                <div className="mt-16 text-sm font-semibold tracking-wide text-yellow-300">
+                <div className="mt-16 text-lg font-logo font-semibold tracking-wide text-yellow-300">
                     Certificates Engine
                 </div>
             </div>
@@ -135,7 +135,7 @@ function CertificateCoach({ cert }) {
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-yellow-400 text-[10px] text-black font-bold uppercase tracking-wider">
                         Official Credential
                     </div>
-                    <span className="text-base font-bold text-white/95 leading-tight drop-shadow-sm">
+                    <span className="text-lg font-logo font-bold tracking-wide text-white/95 leading-tight drop-shadow-sm">
                         {cert.title}
                     </span>
                 </div>

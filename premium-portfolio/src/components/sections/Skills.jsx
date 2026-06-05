@@ -41,7 +41,7 @@ export default function SkillsTrain() {
   return (
     <section className="relative min-h-screen w-full text-white overflow-hidden flex items-center justify-center px-6">
       {/* Sign */}
-      <h2 className="absolute top-8 text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-500 drop-shadow-md">
+      <h2 className="absolute top-8 text-5xl font-logo font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-amber-500 drop-shadow-md">
         My Skills Train
       </h2>
 
@@ -121,7 +121,7 @@ function TrainEngine({ title, accent, windows, setHoverSkill, headGlow }) {
         />
 
         {/* Cabin */}
-        <div className="absolute top-[-40px] left-7 w-[170px] h-[120px] rounded-xl bg-gradient-to-b from-gray-700 to-gray-900 border border-white/10 flex items-center justify-center text-sm font-semibold text-white/80">
+        <div className="absolute top-[-40px] left-7 w-[170px] h-[120px] rounded-xl bg-gradient-to-b from-gray-700 to-gray-900 border border-white/10 flex items-center justify-center text-lg font-logo font-semibold tracking-widest text-white/80">
           Driver
         </div>
 
@@ -137,7 +137,7 @@ function TrainEngine({ title, accent, windows, setHoverSkill, headGlow }) {
         />
 
         {/* Title (shifted down, no overlap) */}
-        <div className="mt-16 text-sm font-semibold tracking-wide text-yellow-300">
+        <div className="mt-16 text-lg font-logo font-semibold tracking-wide text-yellow-300">
           {title}
         </div>
 
@@ -170,7 +170,7 @@ function TrainCoach({ title, accent, windows, setHoverSkill }) {
         />
 
         {/* Title */}
-        <div className="text-sm font-semibold tracking-wide text-yellow-300">
+        <div className="text-lg font-logo font-semibold tracking-wide text-yellow-300">
           {title}
         </div>
 

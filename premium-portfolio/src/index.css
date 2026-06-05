@@ -1,6 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Ciguatera';
+  /* Add actual ciguatera.ttf to src/assets/fonts/ and update this path when you buy/download it */
+  src: url('/assets/fonts/ciguatera.ttf') format('truetype');
+  font-display: swap;
+}
+
+.font-logo {
+  font-family: 'Ciguatera', 'Playfair Display', serif;
+  letter-spacing: 0.02em;
+}
+
+.font-signature {
+  font-family: 'Dancing Script', cursive;
+}
 
 /* Reset unwanted spacing */
 * {
