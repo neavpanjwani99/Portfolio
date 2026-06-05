@@ -15,6 +15,7 @@ import Skills from "./components/sections/Skills.jsx";
 import Contact from "./components/sections/Contact.jsx";
 import Certificate from "./components/sections/certificate.jsx";
 import Experience from "./components/sections/Experience.jsx";
+import AIChatbot from "./components/AIChatbot.jsx";
 
 import "./index.css";
 
@@ -23,6 +24,7 @@ export default function App() {
     <Router>
       {/* Background / Global Effects */}
       <BackgroundParticles />
+      <AIChatbot />
       <CustomCursor />
       <CrownEasterEgg />
 
