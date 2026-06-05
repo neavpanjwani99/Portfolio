@@ -45,8 +45,12 @@ export default function AIChatbot() {
             initial={{ opacity: 0, y: 20, scale: 0.95, rotate: -2 }}
             animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
             exit={{ opacity: 0, y: 20, scale: 0.95, rotate: 2 }}
-            className="w-80 h-[420px] bg-[#0c0c0c] border-[2px] border-yellow-600/50 shadow-2xl flex flex-col relative"
-            style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)' }}
+            className="w-80 h-[420px] bg-black border-[1px] border-yellow-500/50 shadow-[0_0_30px_rgba(234,179,8,0.2)] flex flex-col relative"
+            style={{ 
+              clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)',
+              backgroundImage: 'linear-gradient(rgba(234, 179, 8, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(234, 179, 8, 0.03) 1px, transparent 1px)',
+              backgroundSize: '20px 20px'
+            }}
           >
             {/* Caution Strip Header */}
             <div 
@@ -55,24 +59,28 @@ export default function AIChatbot() {
             />
             
             {/* Header Bar */}
-            <div className="bg-[#1a1a1a] p-3 flex justify-between items-center border-b border-yellow-600/30">
-              <span className="font-mono font-bold text-yellow-500 flex items-center gap-2 text-xs tracking-widest uppercase">
+            <div className="bg-[#050505] p-3 flex justify-between items-center border-b border-yellow-500/30">
+              <span className="font-mono font-bold text-yellow-500 flex items-center gap-2 text-xs tracking-widest uppercase text-shadow-sm">
                 <FaExclamationTriangle className="text-yellow-500 animate-pulse" /> 
-                Terminal_Active
+                SYS_HACK_UPLINK
               </span>
-              <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-red-500 transition">
+              <button onClick={() => setIsOpen(false)} className="text-yellow-700 hover:text-yellow-400 transition">
                 <FaTimes />
               </button>
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-4 font-mono text-xs custom-scrollbar">
+            <div 
+              className="flex-1 p-4 overflow-y-auto space-y-4 font-mono text-xs"
+              style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}
+            >
+              <style>{`.flex-1::-webkit-scrollbar { display: none; }`}</style>
               {messages.map((msg, idx) => (
                 <div key={idx} className={`flex flex-col gap-1 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
-                  <span className="text-gray-600 text-[10px]">
-                    {msg.role === 'user' ? 'GUEST_USER' : 'SYS_CONDUCTOR'}
+                  <span className="text-yellow-700/70 text-[10px]">
+                    {msg.role === 'user' ? 'USER_OVERRIDE' : 'ROOT_ACCESS'}
                   </span>
-                  <div className={`px-3 py-2 border ${msg.role === 'user' ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-200' : 'bg-gray-800/50 border-gray-700 text-gray-300'} max-w-[90%]`}>
+                  <div className={`px-3 py-2 border ${msg.role === 'user' ? 'bg-yellow-500/10 border-yellow-500/50 text-yellow-300' : 'bg-[#0a0a0a] border-yellow-700/50 text-yellow-500'} max-w-[90%] shadow-[0_0_10px_rgba(234,179,8,0.05)]`}>
                     {msg.content}
                   </div>
                 </div>
@@ -81,16 +89,17 @@ export default function AIChatbot() {
             </div>
             
             {/* Input Area */}
-            <form onSubmit={handleSend} className="p-3 border-t border-yellow-600/30 bg-[#111]">
+            <form onSubmit={handleSend} className="p-3 border-t border-yellow-500/30 bg-[#050505]">
               <div className="flex gap-2">
+                <span className="text-yellow-500 font-mono text-sm self-center animate-pulse">{'>'}</span>
                 <input 
                   type="text" 
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="ENTER COMMAND..." 
-                  className="flex-1 bg-black border border-gray-700 px-3 py-2 text-xs text-yellow-500 font-mono focus:outline-none focus:border-yellow-600 placeholder-gray-600"
+                  placeholder="enter_command_" 
+                  className="flex-1 bg-transparent px-2 py-2 text-xs text-yellow-400 font-mono focus:outline-none placeholder-yellow-700/50"
                 />
-                <button type="submit" className="bg-yellow-600 hover:bg-yellow-500 text-black px-3 py-2 text-xs font-bold font-mono transition disabled:opacity-50">
+                <button type="submit" className="bg-yellow-500/20 hover:bg-yellow-500 hover:text-black text-yellow-500 border border-yellow-500 px-3 py-2 text-[10px] tracking-widest font-bold font-mono transition disabled:opacity-50">
                   EXEC
                 </button>
               </div>
@@ -101,7 +110,7 @@ export default function AIChatbot() {
             whileHover={{ scale: 1.05, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="relative w-16 h-16 bg-[#111] flex items-center justify-center border-[2px] border-yellow-600/50 hover:border-yellow-400 hover:bg-[#1a1a1a] transition-all group"
+            className="relative w-16 h-16 bg-black flex items-center justify-center border border-yellow-500 hover:border-yellow-400 hover:bg-[#0a0a0a] hover:shadow-[0_0_20px_rgba(234,179,8,0.4)] transition-all group"
             style={{ clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)' }}
           >
             {/* Caution stripes at the bottom of the button */}
