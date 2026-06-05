@@ -8,6 +8,7 @@ export default function AIChatbot() {
     { role: 'assistant', content: "[SYSTEM MSG] Intercom activated. Neav's digital conductor online. State your inquiry." }
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -20,21 +21,35 @@ export default function AIChatbot() {
     }
   }, [messages, isOpen]);
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
-    const newMessages = [...messages, { role: 'user', content: input }];
+    const userMessage = { role: 'user', content: input };
+    const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput('');
+    setIsLoading(true);
 
-    // Dummy response simulation (Disaster themed)
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: "[ERR 404] Neural link severed. Manual AI override required soon. Awaiting connection..." }
-      ]);
-    }, 1000);
+    try {
+      const response = await fetch('http://localhost:5000/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+      } else {
+        setMessages([...newMessages, { role: 'assistant', content: `[ERR] ${data.error || 'Connection Failed.'}` }]);
+      }
+    } catch (err) {
+      setMessages([...newMessages, { role: 'assistant', content: "[CRITICAL ERR] Backend connection refused. Is the server running?" }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -85,6 +100,16 @@ export default function AIChatbot() {
                   </div>
                 </div>
               ))}
+              {isLoading && (
+                <div className="flex flex-col gap-1 items-start">
+                  <span className="text-yellow-700/70 text-[10px]">ROOT_ACCESS</span>
+                  <div className="px-3 py-2 border bg-[#0a0a0a] border-yellow-700/50 text-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.05)] flex gap-1">
+                    <span className="animate-bounce">.</span>
+                    <span className="animate-bounce" style={{ animationDelay: '0.2s' }}>.</span>
+                    <span className="animate-bounce" style={{ animationDelay: '0.4s' }}>.</span>
+                  </div>
+                </div>
+              )}
               <div ref={messagesEndRef} />
             </div>
             

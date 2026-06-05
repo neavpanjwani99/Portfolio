@@ -55,7 +55,7 @@ export default function AboutMeBogie() {
 
             {/* Small paragraph */}
             I have successfully completed my{" "}
-            <span className="text-yellow-400 font-semibold">2nd Year</span> of
+            <span className="text-yellow-400 font-semibold">3rd Year</span> of
             BSCIT. I am currently learning{" "}
             <span className="text-yellow-400 font-semibold">Unity</span> and{" "}
             <span className="text-yellow-400 font-semibold">C#</span> to
@@ -81,7 +81,7 @@ export default function AboutMeBogie() {
               {
                 label: "College",
                 icon: <FaUniversity className="text-2xl" />,
-                info: "Completed 2nd Year BSCIT with focus on Software Development.",
+                info: "Pursuing 3rd Year BSCIT with focus on Software Development.",
               },
               {
                 label: "Internship",

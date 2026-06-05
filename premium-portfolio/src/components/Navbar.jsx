@@ -68,7 +68,7 @@ export default function Navbar() {
               className="select-none focus:outline-none"
               aria-label="Go to Home"
             >
-              <span className="text-2xl font-extrabold tracking-tight gold-text hover:animate-goldPulse drop-shadow">
+              <span className="text-2xl font-extrabold font-logo gold-text hover:animate-goldPulse drop-shadow">
                 Neav<span className="text-[#FFD700]">.</span>
               </span>
             </Link>

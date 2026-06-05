@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-ai-backend",
+  "version": "1.0.0",
+  "description": "Backend for Neav's Portfolio AI Chatbot with Rolling API Keys",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
