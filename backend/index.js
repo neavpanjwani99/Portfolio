@@ -22,6 +22,13 @@ let currentKeyIndex = 0;
 
 const SYSTEM_PROMPT = `You are Neav's digital assistant. Neav is a 3rd-year BSCIT student, Software Engineer, and aspiring Game Developer (Unity & C#). Be polite, concise, and guide recruiters to relevant sections of his portfolio (Experience, Projects, Certificates). Use a slightly mechanical/hacker tone but remain helpful. Do not break character. Do not use markdown headers, keep text simple.`;
 
+const FREE_MODELS = [
+    "google/gemini-2.0-flash-exp:free",
+    "mistralai/mistral-7b-instruct:free",
+    "qwen/qwen3-8b:free"
+];
+let modelIndex = 0;
+
 app.post('/api/chat', async (req, res) => {
     if (API_KEYS.length === 0) {
         return res.status(500).json({ error: "Server Configuration Error: No API keys available." });
@@ -42,17 +49,17 @@ app.post('/api/chat', async (req, res) => {
         }))
     ];
 
-    const requestBody = {
-        model: "openrouter/free", // Safest auto-routing free model on OpenRouter
-        messages: openRouterMessages
-    };
-
     let attempts = 0;
     const maxAttempts = API_KEYS.length; // Try all keys once if needed
 
     while (attempts < maxAttempts) {
         const keyToUse = API_KEYS[currentKeyIndex];
         const url = "https://openrouter.ai/api/v1/chat/completions";
+
+        const requestBody = {
+            model: FREE_MODELS[modelIndex % FREE_MODELS.length],
+            messages: openRouterMessages
+        };
 
         try {
             console.log(`[Attempt ${attempts + 1}] Using Key Index: ${currentKeyIndex}`);
@@ -72,14 +79,19 @@ app.post('/api/chat', async (req, res) => {
         } catch (error) {
             console.error(`[Error] Key Index ${currentKeyIndex} failed.`);
 
-            // If it's a 429 Too Many Requests or quota exceeded, roll the key
-            if (error.response && (error.response.status === 429 || error.response.status === 403)) {
-                console.log("Rate limit or Quota exceeded. Rolling to next key...");
+            const status = error.response?.status;
+
+            if (status === 429 || status === 403 || status === 404) {
+                console.log(`Status ${status}. Rolling to next key...`);
                 currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
                 attempts++;
+
+                // 404 pe model bhi rotate karo:
+                if (status === 404) {
+                    modelIndex++;
+                }
             } else {
-                // Some other error (e.g. invalid prompt, bad request format), don't retry, just fail
-                console.error("Non-retriable error:", error.response ? error.response.data : error.message);
+                console.error("Non-retriable error:", error.response?.data || error.message);
                 return res.status(500).json({ error: "Failed to generate response." });
             }
         }
