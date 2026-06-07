@@ -112,6 +112,7 @@ export default function LandingPage({ goto }) {
                 animate={{ x: 0 }} // Left pe rukegi
                 transition={{ duration: 6, ease: "easeOut" }}
                 className="absolute bottom-6 left-0 flex items-end space-x-6"
+                style={{ bottom: 3 }}
             >
                 {/* Engine */}
                 <div className="relative">
@@ -180,6 +181,7 @@ export default function LandingPage({ goto }) {
                             className="relative w-40 h-24 rounded-xl 
                    bg-gradient-to-br from-yellow-500 to-amber-500 
                    shadow-md"
+
                         >
                             {/* Wheels */}
                             <motion.div
