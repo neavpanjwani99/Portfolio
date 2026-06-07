@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Core Components
 import Navbar from "./components/Navbar.jsx";
-import Footer from "./components/Footer.jsx";
 import CustomCursor from "./components/CustomCursor.jsx";
 import CrownEasterEgg from "./components/CrownEasterEgg.jsx";
 import BackgroundParticles from "./components/BackgroundParticles.jsx";
@@ -43,9 +42,6 @@ export default function App() {
           <Route path="/certificate" element={<Certificate />} />
         </Routes>
       </main>
-
-      {/* Footer */}
-      <Footer />
     </Router>
   );
 }
