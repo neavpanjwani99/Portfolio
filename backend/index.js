@@ -9,10 +9,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Load keys from .env, expecting a comma-separated list
-// Example: GEMINI_API_KEYS="key1,key2,key3,key4,key5"
-const keysString = (process.env.GEMINI_API_KEYS || "").replace(/['"]/g, '');
-const API_KEYS = keysString.split(',').map(k => k.trim()).filter(k => k.length > 0);
+// Load keys from separate environment variables for pooling
+const API_KEYS = [
+    process.env.GEMINI_API_KEY_1,
+    process.env.GEMINI_API_KEY_2,
+    process.env.GEMINI_API_KEY_3,
+    process.env.GEMINI_API_KEY_4,
+    process.env.GEMINI_API_KEY_5
+].filter(Boolean).map(k => k.replace(/['"]/g, '').trim());
 
 let currentKeyIndex = 0;
 
@@ -39,7 +43,7 @@ app.post('/api/chat', async (req, res) => {
     ];
 
     const requestBody = {
-        model: "google/gemini-1.5-flash", // OpenRouter model string
+        model: "meta-llama/llama-3-8b-instruct:free", // Using a guaranteed free/valid OpenRouter model
         messages: openRouterMessages
     };
 
