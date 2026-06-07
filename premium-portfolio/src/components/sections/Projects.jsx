@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import { FaExternalLinkAlt, FaGithub, FaTimes } from "react-icons/fa";
 import project1 from "../../assets/project_1.png";
 import project2 from "../../assets/project_2.png";
 import project3 from "../../assets/project_3.png";
@@ -17,13 +17,15 @@ export default function ProjectsBogie() {
       desc: "A real-time stock market dashboard with live charts, trading insights, and premium UI design.",
       img: project1,
       stack: ["React", "Tailwind", "Chart.js", "Node.js"],
-      github: null, // Removed as per request
+      status: "ACTIVE DEVELOPMENT",
+      github: null,
     },
     {
       name: "Satrika - AI Chatbot",
       desc: "Advanced AI chatbot using Gemini APIs with multi-key management and integrated image generation.",
       img: satrikaImg,
       stack: ["React", "Gemini API", "Node.js", "Figma"],
+      status: "DEVELOPED",
       live: "https://satrika.onrender.com/",
       github: "https://github.com/neavpanjwani99/Satrika.git",
     },
@@ -32,6 +34,7 @@ export default function ProjectsBogie() {
       desc: "Fast-paced 3D game built with Unity. Features smooth mechanics and immersive gameplay.",
       img: strideZeroImg, 
       stack: ["Unity", "C#", "3D Modeling", "Game Design"],
+      status: "DEVELOPED",
       live: "https://neavpanjwani.itch.io/stridezero",
       github: "https://github.com/neavpanjwani99/StrideZero",
     },
@@ -40,6 +43,7 @@ export default function ProjectsBogie() {
       desc: "Unique donation-matching platform with GSAP, Flask & real-time APIs. Won 3rd rank in competition.",
       img: project6,
       stack: ["Jinja2", "GSAP", "APIs", "Flask", "MySQL"],
+      status: "DEVELOPED",
       github: "https://github.com/neavpanjwani99/CharityDropDonationMatchingSystem.git",
     },
     {
@@ -47,6 +51,7 @@ export default function ProjectsBogie() {
       desc: "Multiplayer Ludo game built in Python with real-time dice rolls and interactive gameplay.",
       img: project2,
       stack: ["Python", "Tkinter", "Pygame"],
+      status: "DEVELOPED",
       github: "https://github.com/neavpanjwani99/ludo-game-.git",
     },
     {
@@ -54,6 +59,7 @@ export default function ProjectsBogie() {
       desc: "Corporate website developed during internship. Highlighting professional layout and responsiveness.",
       img: project3,
       stack: ["HTML", "CSS", "Bootstrap", "JavaScript", "PHP"],
+      status: "DEVELOPED",
       github: null,
     },
     {
@@ -61,11 +67,13 @@ export default function ProjectsBogie() {
       desc: "Full-featured web system for property rentals and sales with real-time functionality.",
       img: project4,
       stack: ["HTML", "Tailwind", "Bootstrap", "JavaScript", "PHP", "APIs"],
+      status: "DEVELOPED",
       github: null,
     },
   ];
 
   const [hovered, setHovered] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   return (
     <section
@@ -139,11 +147,16 @@ export default function ProjectsBogie() {
 
             {/* Project Content */}
             {/* Project Content */}
-            <div className="p-6 flex flex-col h-1/2">
+            <div className="p-6 flex flex-col h-1/2 cursor-pointer" onClick={() => setSelectedProject(project)}>
               <div className="flex-1">
-                <h3 className="text-xl font-logo font-extrabold text-yellow-400 mb-2">
-                  {project.name}
-                </h3>
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-xl font-logo font-extrabold text-yellow-400">
+                    {project.name}
+                  </h3>
+                  <span className={`text-[9px] font-bold px-2 py-1 rounded-full whitespace-nowrap ${project.status === "ACTIVE DEVELOPMENT" ? "bg-red-500/20 text-red-400 border border-red-500/50" : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/50"}`}>
+                    {project.status}
+                  </span>
+                </div>
                 <p className="text-white/80 text-xs mb-3 leading-snug line-clamp-2">
                   {project.desc}
                 </p>
@@ -196,6 +209,75 @@ export default function ProjectsBogie() {
           </motion.div>
         ))}
       </div>
+
+      {/* Project Preview Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 50 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 50 }}
+              className="relative w-full max-w-3xl bg-gradient-to-br from-[#1A1A2E] to-[#0B0B0D] border-2 border-yellow-500/30 rounded-3xl shadow-2xl overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 text-white/80 hover:bg-yellow-400 hover:text-black transition-colors"
+              >
+                <FaTimes />
+              </button>
+
+              <div className="w-full h-64 bg-black overflow-hidden relative border-b-2 border-yellow-500/30">
+                <img src={selectedProject.img} alt={selectedProject.name} className="w-full h-full object-cover opacity-90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0D] to-transparent" />
+                <div className="absolute bottom-4 left-6">
+                   <span className={`text-xs font-bold px-3 py-1 rounded-full ${selectedProject.status === "ACTIVE DEVELOPMENT" ? "bg-red-500/20 text-red-400 border border-red-500/50" : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/50"}`}>
+                    {selectedProject.status}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-8">
+                <h2 className="text-3xl font-logo font-bold text-yellow-400 mb-4">{selectedProject.name}</h2>
+                <p className="text-white/80 text-base mb-6 leading-relaxed">
+                  {selectedProject.desc} This project showcases a deep understanding of modern development practices, focusing on performance, scalability, and premium UI/UX design. The architecture is built to be robust and highly interactive.
+                </p>
+
+                <div className="mb-8">
+                  <h4 className="text-sm font-semibold text-yellow-500/80 uppercase tracking-widest mb-3">Tech Stack</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProject.stack.map((tech, j) => (
+                      <span key={j} className="px-3 py-1 text-xs rounded-full bg-yellow-500/10 text-amber-300 border border-yellow-500/30">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  {selectedProject.live && (
+                    <a href={selectedProject.live} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-yellow-400 text-black font-bold hover:bg-yellow-300 hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,215,0,0.4)]">
+                      <FaExternalLinkAlt /> View Live Demo
+                    </a>
+                  )}
+                  {selectedProject.github && (
+                    <a href={selectedProject.github} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 hover:scale-105 transition-all">
+                      <FaGithub /> Source Code
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
