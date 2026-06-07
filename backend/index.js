@@ -9,18 +9,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Load keys from separate environment variables for pooling
+// Load keys from separate environment variables for pooling (accepts both env names for ease)
 const API_KEYS = [
-    process.env.GEMINI_API_KEY_1,
-    process.env.GEMINI_API_KEY_2,
-    process.env.GEMINI_API_KEY_3,
-    process.env.GEMINI_API_KEY_4,
-    process.env.GEMINI_API_KEY_5
+    process.env.GROQ_API_KEY_1 || process.env.GEMINI_API_KEY_1,
+    process.env.GROQ_API_KEY_2 || process.env.GEMINI_API_KEY_2,
+    process.env.GROQ_API_KEY_3 || process.env.GEMINI_API_KEY_3,
+    process.env.GROQ_API_KEY_4 || process.env.GEMINI_API_KEY_4,
+    process.env.GROQ_API_KEY_5 || process.env.GEMINI_API_KEY_5
 ].filter(Boolean).map(k => k.replace(/['"]/g, '').trim());
 
 let currentKeyIndex = 0;
 
 const SYSTEM_PROMPT = `You are Neav's digital assistant. Neav is a 3rd-year BSCIT student, Software Engineer, and aspiring Game Developer (Unity & C#). Be polite, concise, and guide recruiters to relevant sections of his portfolio (Experience, Projects, Certificates). Use a slightly mechanical/hacker tone but remain helpful. Do not break character. Do not use markdown headers, keep text simple.`;
+
+const GROQ_MODELS = [
+    "llama3-8b-8192",
+    "llama3-70b-8192",
+    "mixtral-8x7b-32768"
+];
+let modelIndex = 0;
 
 app.post('/api/chat', async (req, res) => {
     if (API_KEYS.length === 0) {
@@ -33,34 +40,39 @@ app.post('/api/chat', async (req, res) => {
         return res.status(400).json({ error: "Invalid request format. 'messages' array is required." });
     }
 
-    // Format messages for Google Gemini API
-    const geminiContents = messages.map(msg => ({
-        role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.content }]
-    }));
-
-    const requestBody = {
-        system_instruction: {
-            parts: [{ text: SYSTEM_PROMPT }]
-        },
-        contents: geminiContents
-    };
+    // Format messages for Groq API (OpenAI format)
+    const groqMessages = [
+        { role: "system", content: SYSTEM_PROMPT },
+        ...messages.map(msg => ({
+            role: msg.role === 'user' ? 'user' : 'assistant',
+            content: msg.content
+        }))
+    ];
 
     let attempts = 0;
-    const maxAttempts = API_KEYS.length;
+    const maxAttempts = Math.max(API_KEYS.length, GROQ_MODELS.length);
 
     while (attempts < maxAttempts) {
         const keyToUse = API_KEYS[currentKeyIndex];
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${keyToUse}`;
+        const url = "https://api.groq.com/openai/v1/chat/completions";
+
+        const requestBody = {
+            model: GROQ_MODELS[modelIndex % GROQ_MODELS.length],
+            messages: groqMessages,
+            temperature: 0.7
+        };
 
         try {
-            console.log(`[Attempt ${attempts + 1}] Using Key Index: ${currentKeyIndex}`);
+            console.log(`[Attempt ${attempts + 1}] Key Index: ${currentKeyIndex}, Model: ${requestBody.model}`);
             const response = await axios.post(url, requestBody, {
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 
+                    'Authorization': `Bearer ${keyToUse}`,
+                    'Content-Type': 'application/json' 
+                }
             });
 
             // Success! Send back the text
-            const replyText = response.data.candidates[0].content.parts[0].text;
+            const replyText = response.data.choices[0].message.content;
             return res.json({ reply: replyText });
 
         } catch (error) {
@@ -68,11 +80,15 @@ app.post('/api/chat', async (req, res) => {
 
             const status = error.response?.status;
 
-            // 429 Too Many Requests, 403 Forbidden/Quota Exceeded, 503 Service Unavailable
-            if (status === 429 || status === 403 || status === 503) {
-                console.log(`Status ${status}. Rate limit/Quota exceeded. Rolling to next key...`);
+            if (status === 429 || status === 403 || status === 404) {
+                console.log(`Status ${status}. Rolling to next key...`);
                 currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
                 attempts++;
+
+                // Rotate model on 404 or 429 to be safe
+                if (status === 404) {
+                    modelIndex++;
+                }
             } else {
                 console.error("Non-retriable error:", error.response?.data || error.message);
                 return res.status(500).json({ error: "Failed to generate response." });
