@@ -43,7 +43,7 @@ app.post('/api/chat', async (req, res) => {
     ];
 
     const requestBody = {
-        model: "meta-llama/llama-3-8b-instruct:free", // Using a guaranteed free/valid OpenRouter model
+        model: "openrouter/free", // Safest auto-routing free model on OpenRouter
         messages: openRouterMessages
     };
 
