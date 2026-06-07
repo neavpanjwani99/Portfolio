@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Load keys from .env, expecting a comma-separated list
 // Example: GEMINI_API_KEYS="key1,key2,key3,key4,key5"
-const keysString = process.env.GEMINI_API_KEYS || "";
+const keysString = (process.env.GEMINI_API_KEYS || "").replace(/['"]/g, '');
 const API_KEYS = keysString.split(',').map(k => k.trim()).filter(k => k.length > 0);
 
 let currentKeyIndex = 0;
