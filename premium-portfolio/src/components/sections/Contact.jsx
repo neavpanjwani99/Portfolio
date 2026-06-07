@@ -78,7 +78,7 @@ function ContactTrainCoach() {
 
     const formData = new FormData(e.target);
     // 🔴 IMPORTANT: Go to https://web3forms.com/ and get a free access key for your email, then paste it here
-    formData.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY");
+    formData.append("access_key", "983e4c02-2bfa-497e-8f82-70543bd020c3");
 
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
@@ -146,7 +146,7 @@ function ContactTrainCoach() {
             className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-2xl"
           >
             <p className="text-xl font-bold text-amber-400 drop-shadow-md">
-               Submitted!
+              Submitted!
             </p>
           </motion.div>
         )}
