@@ -70,23 +70,35 @@ function ContactTrainEngine() {
 /* ---------------- Coach with Contact Form ---------------- */
 function ContactTrainCoach() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
 
-    //  Reset form fields
-    e.target.reset();
+    const formData = new FormData(e.target);
+    // 🔴 IMPORTANT: Go to https://web3forms.com/ and get a free access key for your email, then paste it here
+    formData.append("access_key", "YOUR_WEB3FORMS_ACCESS_KEY");
 
-    //  Show popup
-    setSubmitted(true);
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
 
-    //  Hide popup after 2.5s
-    setTimeout(() => {
-      setSubmitted(false);
-
-      // If you want full page reload instead of just reset:
-      // window.location.reload();
-    }, 2500);
+      if (data.success) {
+        e.target.reset();
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 3000);
+      } else {
+        alert("Form Error: Please replace 'YOUR_WEB3FORMS_ACCESS_KEY' with your actual key in Contact.jsx.");
+      }
+    } catch (err) {
+      alert("Network Error. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -97,26 +109,30 @@ function ContactTrainCoach() {
           <input
             type="text"
             name="name"
-            placeholder="Name"
-            className="p-3 rounded-md bg-white/10 border border-yellow-400 text-white placeholder-white/70 outline-none focus:ring-2 focus:ring-yellow-400"
+            placeholder="Your Name"
+            required
+            className="p-3 rounded-md bg-[#1e293b]/80 border border-yellow-500/50 text-white placeholder-white/50 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all backdrop-blur-sm shadow-inner"
           />
           <input
             type="email"
             name="email"
-            placeholder="Email"
-            className="p-3 rounded-md bg-white/10 border border-yellow-400 text-white placeholder-white/70 outline-none focus:ring-2 focus:ring-yellow-400"
+            placeholder="Your Email"
+            required
+            className="p-3 rounded-md bg-[#1e293b]/80 border border-yellow-500/50 text-white placeholder-white/50 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all backdrop-blur-sm shadow-inner"
           />
           <textarea
             rows={4}
             name="message"
-            placeholder="Message"
-            className="p-3 rounded-md bg-white/10 border border-yellow-400 text-white placeholder-white/70 outline-none focus:ring-2 focus:ring-yellow-400"
+            placeholder="Your Message..."
+            required
+            className="p-3 rounded-md bg-[#1e293b]/80 border border-yellow-500/50 text-white placeholder-white/50 outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all backdrop-blur-sm shadow-inner resize-none"
           />
           <button
             type="submit"
-            className="p-3 rounded-md border border-yellow-400 text-yellow-400 bg-transparent font-semibold mt-2 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,215,0,0.8)] transition-all"
+            disabled={loading}
+            className="p-3 rounded-md border-2 border-yellow-400 text-yellow-400 bg-transparent font-bold tracking-widest mt-2 hover:bg-yellow-400 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_20px_rgba(255,215,0,0.8)] transition-all uppercase text-sm"
           >
-            Send
+            {loading ? "Sending..." : "Send Message"}
           </button>
         </form>
 

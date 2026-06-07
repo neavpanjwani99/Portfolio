@@ -29,7 +29,18 @@ export default function AboutMeBogie() {
         {/* Windows inside Bogie */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-12 py-16 items-center">
           {/* Left Window: Profile */}
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center relative">
+            {/* Animated Circular Rings */}
+            <motion.div 
+              animate={{ rotate: 360 }} 
+              transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+              className="absolute w-72 h-72 rounded-full border-2 border-dashed border-yellow-500/40"
+            />
+            <motion.div 
+              animate={{ rotate: -360 }} 
+              transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+              className="absolute w-80 h-80 rounded-full border border-yellow-400/30 shadow-[0_0_20px_rgba(255,215,0,0.1)]"
+            />
             <InteractiveParticleProfile />
           </div>
 
@@ -65,12 +76,18 @@ export default function AboutMeBogie() {
         </div>
 
         {/* Timeline Strip */}
-        <div className="mt-8 px-6 pb-20">
+        <div className="mt-12 px-6 pb-24">
           <div className="relative flex items-center justify-between">
-            <div
-              className="absolute top-1/2 left-0 w-full h-[4px] 
-              bg-gradient-to-r from-yellow-400/60 to-yellow-300/60 rounded-full"
-            />
+            {/* Animated Progress Line */}
+            <div className="absolute top-1/2 left-0 w-full h-[4px] bg-yellow-400/20 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: "100%" }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+                className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 shadow-[0_0_10px_rgba(255,215,0,0.8)]"
+              />
+            </div>
 
             {[
               {
@@ -105,17 +122,19 @@ export default function AboutMeBogie() {
                 }}
                 className="relative z-10 flex flex-col items-center group"
               >
-                {/* Dot with Real Icon */}
-                <div
+                {/* Dot with Real Icon & Rotating Animation */}
+                <motion.div
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6, ease: "circOut" }}
                   className="w-14 h-14 flex items-center justify-center 
                   rounded-full bg-yellow-400 text-black 
                   shadow-[0_0_15px_rgba(255,215,0,0.5)] 
-                  border-2 border-amber-600
-                  transition-transform group-hover:scale-110"
+                  border-2 border-amber-600 cursor-pointer
+                  transition-shadow duration-300 group-hover:shadow-[0_0_30px_rgba(255,215,0,1)]"
                 >
                   {step.icon}
-                </div>
-                <p className="mt-2 text-sm font-logo tracking-widest text-white/80">{step.label}</p>
+                </motion.div>
+                <p className="mt-4 text-sm font-logo tracking-widest text-white/90 font-medium">{step.label}</p>
 
                 {/* Hover Info Card */}
                 <div
