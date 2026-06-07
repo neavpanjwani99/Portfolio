@@ -10,7 +10,7 @@ export default function NeavCharacter() {
   const [blink, setBlink] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hey! I'm Neav's AI. Ask me anything 👋" }
+    { role: "assistant", content: "Hey! I'm CIPHER. Ask me anything.." }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);

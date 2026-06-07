@@ -23,9 +23,8 @@ let currentKeyIndex = 0;
 const SYSTEM_PROMPT = `You are Neav's digital assistant. Neav is a 3rd-year BSCIT student, Software Engineer, and aspiring Game Developer (Unity & C#). Be polite, concise, and guide recruiters to relevant sections of his portfolio (Experience, Projects, Certificates). Use a slightly mechanical/hacker tone but remain helpful. Do not break character. Do not use markdown headers, keep text simple.`;
 
 const GROQ_MODELS = [
-    "llama3-8b-8192",
-    "llama3-70b-8192",
-    "mixtral-8x7b-32768"
+    "llama-3.1-8b-instant",
+    "llama-3.3-70b-versatile"
 ];
 let modelIndex = 0;
 
