@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function NeavCharacter() {
   const svgRef = useRef(null);
@@ -15,16 +16,19 @@ export default function NeavCharacter() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const [showThought, setShowThought] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     setShowThought(true);
     const timer = setTimeout(() => {
       setShowThought(false);
-    }, 5000); // Only show for 5 seconds
+      setIsInitialLoad(false);
+    }, 6000); // Only show for 6 seconds
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
   const getThought = () => {
+    let msg = "";
     switch (location.pathname) {
       case "/":
         return "So you actually showed up. Interesting choice.";
@@ -48,8 +52,9 @@ export default function NeavCharacter() {
         return "Got something worth my time? Talk.";
 
       default:
-        return "Even I don't know where you are.";
+        msg = "Even I don't know where you are.";
     }
+    return isInitialLoad ? `I am CIPHER. ${msg}` : msg;
   };
 
   // Mouse tracking — direct DOM manipulation for high performance (no React state lag)
@@ -111,7 +116,8 @@ export default function NeavCharacter() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/chat", {
+      const backendUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const res = await fetch(`${backendUrl}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: newMessages })
@@ -152,8 +158,8 @@ export default function NeavCharacter() {
 
         .thought-cloud {
           position: absolute;
-          bottom: 120%;
-          right: 15px;
+          bottom: 125%;
+          right: 30px; /* Anchors the cloud so it expands leftward into the screen */
           background: #0d1b2e;
           border: 1px solid #00d4bb;
           box-shadow: 0 0 15px rgba(0, 212, 187, 0.15);
@@ -170,10 +176,10 @@ export default function NeavCharacter() {
         .thought-cloud::before {
           content: '';
           position: absolute;
-          bottom: -10px;
-          right: 25px;
-          width: 12px;
-          height: 12px;
+          bottom: -15px;
+          right: 30px;
+          width: 10px;
+          height: 10px;
           background: #0d1b2e;
           border: 1px solid #00d4bb;
           border-radius: 50%;
@@ -181,10 +187,10 @@ export default function NeavCharacter() {
         .thought-cloud::after {
           content: '';
           position: absolute;
-          bottom: -20px;
-          right: 15px;
-          width: 6px;
-          height: 6px;
+          bottom: -30px;
+          right: 32px;
+          width: 5px;
+          height: 5px;
           background: #0d1b2e;
           border: 1px solid #00d4bb;
           border-radius: 50%;
@@ -194,28 +200,37 @@ export default function NeavCharacter() {
       <div style={{ position: "fixed", bottom: 3, right: 20, zIndex: 9999, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
 
         {/* ── Chat Panel ── */}
-        {chatOpen && (
-          <div style={{ width: 300, height: 390, background: "#06090f", border: "1px solid #f5c518", borderRadius: 12, display: "flex", flexDirection: "column", overflow: "hidden", animation: "chatIn .3s cubic-bezier(.23,1,.32,1)", boxShadow: "0 0 36px rgba(245,197,24,0.13)", position: "relative" }}>
-            <div style={{ position: "absolute", left: 0, right: 0, height: 1.5, background: "linear-gradient(90deg,transparent,#00c9b155,transparent)", animation: "scan 4s linear infinite", pointerEvents: "none", zIndex: 2 }} />
-            <div style={{ background: "#f5c518", padding: "9px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 10, fontWeight: 700, color: "#0a0d1a", letterSpacing: 1.5 }}>NEAV_AI // ONLINE</span>
-              <button onClick={() => setChatOpen(false)} style={{ background: "none", border: "none", color: "#0a0d1a", fontSize: 15, cursor: "pointer", fontWeight: "bold" }}>✕</button>
-            </div>
-            <div style={{ flex: 1, overflowY: "auto", padding: 12, display: "flex", flexDirection: "column", gap: 8, scrollbarWidth: "thin", scrollbarColor: "#f5c51833 transparent" }}>
-              {messages.map((m, i) => (
-                <div key={i} style={{ background: m.role === "user" ? "#f5c518" : "#0d1b2e", color: m.role === "user" ? "#0a0d1a" : "#e0e0e0", border: m.role === "assistant" ? "1px solid #f5c51822" : "none", borderRadius: m.role === "user" ? "12px 12px 2px 12px" : "12px 12px 12px 2px", padding: "7px 11px", fontSize: 11, fontFamily: "'Share Tech Mono',monospace", maxWidth: "86%", alignSelf: m.role === "user" ? "flex-end" : "flex-start", lineHeight: 1.55, wordBreak: "break-word", whiteSpace: "pre-wrap" }}>
-                  {m.content}
-                </div>
-              ))}
-              {loading && <div style={{ color: "#f5c51877", fontFamily: "'Share Tech Mono',monospace", fontSize: 11 }}>thinking...</div>}
-              <div ref={messagesEndRef} />
-            </div>
-            <div style={{ display: "flex", borderTop: "1px solid #f5c51822", background: "#040810" }}>
-              <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && sendMessage()} placeholder="ask about Neav..." style={{ flex: 1, background: "none", border: "none", outline: "none", padding: "10px 12px", color: "#e0e0e0", fontFamily: "'Share Tech Mono',monospace", fontSize: 11, caretColor: "#f5c518" }} />
-              <button className="nc-send" onClick={sendMessage} style={{ background: "#f5c518", border: "none", padding: "0 13px", fontFamily: "'Share Tech Mono',monospace", fontSize: 10, fontWeight: 700, color: "#0a0d1a", cursor: "pointer", transition: "background .18s", letterSpacing: 1 }}>SEND</button>
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {chatOpen && (
+            <motion.div
+              key="chatbox"
+              initial={{ opacity: 0, scale: 0.4, y: 60, x: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+              exit={{ opacity: 0, scale: 0.4, y: 60, x: 30 }}
+              transition={{ type: "spring", damping: 18, stiffness: 250 }}
+              style={{ transformOrigin: "bottom right", width: 300, height: 390, background: "#06090f", border: "1px solid #f5c518", borderRadius: 12, display: "flex", flexDirection: "column", overflow: "hidden", boxShadow: "0 0 36px rgba(245,197,24,0.13)", position: "relative" }}
+            >
+              <div style={{ position: "absolute", left: 0, right: 0, height: 1.5, background: "linear-gradient(90deg,transparent,#00c9b155,transparent)", animation: "scan 4s linear infinite", pointerEvents: "none", zIndex: 2 }} />
+              <div style={{ background: "#f5c518", padding: "9px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span style={{ fontFamily: "'Share Tech Mono',monospace", fontSize: 10, fontWeight: 700, color: "#0a0d1a", letterSpacing: 1.5 }}>CIPHER // ONLINE</span>
+                <button onClick={() => setChatOpen(false)} style={{ background: "none", border: "none", color: "#0a0d1a", fontSize: 15, cursor: "pointer", fontWeight: "bold" }}>✕</button>
+              </div>
+              <div style={{ flex: 1, overflowY: "auto", padding: 12, display: "flex", flexDirection: "column", gap: 8, scrollbarWidth: "thin", scrollbarColor: "#f5c51833 transparent" }}>
+                {messages.map((m, i) => (
+                  <div key={i} style={{ background: m.role === "user" ? "#f5c518" : "#0d1b2e", color: m.role === "user" ? "#0a0d1a" : "#e0e0e0", border: m.role === "assistant" ? "1px solid #f5c51822" : "none", borderRadius: m.role === "user" ? "12px 12px 2px 12px" : "12px 12px 12px 2px", padding: "7px 11px", fontSize: 11, fontFamily: "'Share Tech Mono',monospace", maxWidth: "86%", alignSelf: m.role === "user" ? "flex-end" : "flex-start", lineHeight: 1.55, wordBreak: "break-word", whiteSpace: "pre-wrap" }}>
+                    {m.content}
+                  </div>
+                ))}
+                {loading && <div style={{ color: "#f5c51877", fontFamily: "'Share Tech Mono',monospace", fontSize: 11 }}>thinking...</div>}
+                <div ref={messagesEndRef} />
+              </div>
+              <div style={{ display: "flex", borderTop: "1px solid #f5c51822", background: "#040810" }}>
+                <input value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && sendMessage()} placeholder="ask CIPHER..." style={{ flex: 1, background: "none", border: "none", outline: "none", padding: "10px 12px", color: "#e0e0e0", fontFamily: "'Share Tech Mono',monospace", fontSize: 11, caretColor: "#f5c518" }} />
+                <button className="nc-send" onClick={sendMessage} style={{ background: "#f5c518", border: "none", padding: "0 13px", fontFamily: "'Share Tech Mono',monospace", fontSize: 10, fontWeight: 700, color: "#0a0d1a", cursor: "pointer", transition: "background .18s", letterSpacing: 1 }}>SEND</button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* ── Character ── */}
         <div className="nc" onClick={() => setChatOpen(o => !o)} style={{ position: "relative", userSelect: "none" }}>
@@ -228,9 +243,11 @@ export default function NeavCharacter() {
           )}
 
           {/* Hover tip */}
-          <div className="nc-tip" style={{ opacity: 0, transition: "opacity .2s", position: "absolute", bottom: "106%", right: 0, background: "#0d1b2e", border: "1px solid #f5c518", color: "#f5c518", fontFamily: "'Share Tech Mono',monospace", fontSize: 9, padding: "4px 10px", borderRadius: "8px 8px 0 8px", whiteSpace: "nowrap", letterSpacing: 1, pointerEvents: "none", zIndex: 10 }}>
-            click to chat
-          </div>
+          {!chatOpen && (
+            <div className="nc-tip" style={{ opacity: 0, transition: "opacity .2s", position: "absolute", bottom: "106%", right: 0, background: "#0d1b2e", border: "1px solid #f5c518", color: "#f5c518", fontFamily: "'Share Tech Mono',monospace", fontSize: 9, padding: "4px 10px", borderRadius: "8px 8px 0 8px", whiteSpace: "nowrap", letterSpacing: 1, pointerEvents: "none", zIndex: 10 }}>
+              click to chat
+            </div>
+          )}
 
           <svg
             ref={svgRef}
