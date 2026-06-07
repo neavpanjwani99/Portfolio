@@ -29,18 +29,18 @@ app.post('/api/chat', async (req, res) => {
         return res.status(400).json({ error: "Invalid request format. 'messages' array is required." });
     }
 
-    // Format messages for Gemini API
-    const geminiContents = messages.map(msg => ({
-        role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.content }]
-    }));
+    // Format messages for OpenRouter API
+    const openRouterMessages = [
+        { role: "system", content: SYSTEM_PROMPT },
+        ...messages.map(msg => ({
+            role: msg.role === 'user' ? 'user' : 'assistant',
+            content: msg.content
+        }))
+    ];
 
-    // Inject system prompt into the first message or as a system instruction (using Gemini 1.5 format)
     const requestBody = {
-        system_instruction: {
-            parts: [{ text: SYSTEM_PROMPT }]
-        },
-        contents: geminiContents
+        model: "google/gemini-1.5-flash", // OpenRouter model string
+        messages: openRouterMessages
     };
 
     let attempts = 0;
@@ -48,16 +48,21 @@ app.post('/api/chat', async (req, res) => {
 
     while (attempts < maxAttempts) {
         const keyToUse = API_KEYS[currentKeyIndex];
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${keyToUse}`;
+        const url = "https://openrouter.ai/api/v1/chat/completions";
 
         try {
             console.log(`[Attempt ${attempts + 1}] Using Key Index: ${currentKeyIndex}`);
             const response = await axios.post(url, requestBody, {
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 
+                    'Authorization': `Bearer ${keyToUse}`,
+                    'HTTP-Referer': 'https://neavpanjwanii.web.app',
+                    'X-Title': 'Neav Portfolio',
+                    'Content-Type': 'application/json' 
+                }
             });
 
             // Success! Send back the text
-            const replyText = response.data.candidates[0].content.parts[0].text;
+            const replyText = response.data.choices[0].message.content;
             return res.json({ reply: replyText });
 
         } catch (error) {
