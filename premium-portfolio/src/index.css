@@ -5,12 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
+/* @font-face {
   font-family: 'Ciguatera';
-  /* Add actual ciguatera.ttf to src/assets/fonts/ and update this path when you buy/download it */
   src: url('/assets/fonts/ciguatera.ttf') format('truetype');
   font-display: swap;
-}
+} */
 
 .font-logo {
   font-family: 'Ciguatera', 'Playfair Display', serif;
