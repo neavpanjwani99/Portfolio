@@ -29,11 +29,11 @@ export default function Experience() {
       </h2>
 
       {/* Track */}
-      <div className="absolute bottom-20 left-0 right-0 h-2 bg-gradient-to-r from-gray-600 via-gray-500 to-gray-600 shadow-[0_0_20px_rgba(0,0,0,0.6)] min-w-max" />
-      <div className="absolute bottom-[60px] left-0 right-0 h-2 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 min-w-max" />
-      <div className="absolute bottom-[72px] left-0 right-0 flex gap-6 px-6 min-w-max">
-        {Array.from({ length: 50 }).map((_, i) => (
-          <div key={i} className="min-w-[48px] w-12 h-12 bg-gray-800 rounded-sm shadow-inner" />
+      <div className="absolute bottom-20 left-0 right-0 h-2 bg-gradient-to-r from-gray-600 via-gray-500 to-gray-600 shadow-[0_0_20px_rgba(0,0,0,0.6)]" />
+      <div className="absolute bottom-[60px] left-0 right-0 h-2 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700" />
+      <div className="absolute bottom-[72px] left-0 right-0 grid grid-cols-12 gap-6 px-6">
+        {Array.from({ length: 24 }).map((_, i) => (
+          <div key={i} className="h-12 bg-gray-800 rounded-sm shadow-inner" />
         ))}
       </div>
 
@@ -93,20 +93,20 @@ function ExperienceTrainEngine() {
 function ExperienceTrainCoach({ exp }) {
   return (
     <motion.div className="relative shrink-0">
-      <div className="relative w-[700px] min-h-[350px] rounded-2xl bg-gradient-to-b from-gray-800 to-gray-900 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.55)] flex flex-col p-8 overflow-hidden">
-        <div className="flex justify-between items-start mb-6 border-b border-yellow-500/30 pb-4">
+      <div className="relative w-[450px] min-h-[350px] rounded-2xl bg-gradient-to-b from-gray-800 to-gray-900 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.55)] flex flex-col p-6 overflow-hidden">
+        <div className="flex justify-between items-start mb-4 border-b border-yellow-500/30 pb-3 gap-2">
           <div>
-            <h3 className="text-3xl font-logo font-bold text-yellow-400 mb-1 flex items-center gap-3">
-              <FaBuilding className="text-white/80" /> {exp.company}
+            <h3 className="text-2xl font-logo font-bold text-yellow-400 mb-1 flex items-center gap-2">
+              <FaBuilding className="text-white/80 shrink-0" /> <span className="line-clamp-1">{exp.company}</span>
             </h3>
-            <p className="text-xl text-yellow-200 font-semibold">{exp.role}</p>
+            <p className="text-base text-yellow-200 font-semibold leading-tight">{exp.role}</p>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-yellow-400/30 text-white/90 text-sm font-bold shadow-inner">
-            <FaCalendarAlt className="text-yellow-400" /> {exp.duration}
+          <div className="flex shrink-0 items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-yellow-400/30 text-white/90 text-xs font-bold shadow-inner">
+            <FaCalendarAlt className="text-yellow-400 shrink-0" /> <span className="whitespace-nowrap">{exp.duration.replace("Feb 2025 - Aug 2025", "Feb - Aug '25")}</span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-full">
+        <div className="flex flex-col gap-6 h-full">
           {/* Details List */}
           <ul className="space-y-3">
             {exp.details.map((point, idx) => (
@@ -143,9 +143,7 @@ function ExperienceTrainCoach({ exp }) {
       </div>
 
       {/* Wheels */}
-      <div className="mt-2 flex gap-16 justify-center">
-        <Wheel size={56} />
-        <Wheel size={56} />
+      <div className="mt-2 flex gap-8 justify-center">
         <Wheel size={56} />
         <Wheel size={56} />
       </div>
