@@ -54,11 +54,11 @@ npm run dev
 
 That's it! The site should now be running on your `localhost`.
 
-## Let's Connect! 🤝
+## Let's Connect! 
 If you find a bug, have a suggestion, or just want to talk about game dev or web technologies, feel free to reach out.
 
 - **GitHub:** [@neavpanjwani99](https://github.com/neavpanjwani99)
 - **Itch.io:** [neavpanjwani.itch.io](https://neavpanjwani.itch.io)
 
 ---
-*Built with ❤️ and way too much caffeine.*
+*Built with and way too much caffeine.*
