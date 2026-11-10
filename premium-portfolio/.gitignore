@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 
 ai-builf.md
+
+src/assets/profile.jpg
+src/assets/uiux_mesh.png
+
